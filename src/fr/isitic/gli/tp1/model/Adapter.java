@@ -26,7 +26,8 @@ public class Adapter implements IModel {
     @Override
     public void addItem(Item i ) {
         model.getItems().add(i);
-
+        //// TODO: 19/09/16
+        //this.notifierObserver();
     }
 
     @Override

@@ -5,15 +5,12 @@ import fr.isitic.gli.tp1.model.Adapter;
 import fr.isitic.gli.tp1.model.IModel;
 import fr.isitic.gli.tp1.model.Item;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.Arc2D;
 import java.awt.geom.Rectangle2D;
+import java.util.Random;
 
 import javax.swing.JComponent;
 
@@ -23,55 +20,84 @@ public class Vue extends JComponent implements MouseListener
     Graphics2D g2d;
     IModel adapter;
     IController controller;
+    Random rand = new Random();
 
     String mTexte;
+
+    Shape[] shapes ;
+    Color[] colors;
 
     public Vue(IModel im, IController ic) {
         mTexte = new String("Hello");
         adapter = im;
         controller = ic;
         addMouseListener(this);
+        init();
+        initVue();
     }
 
-    class Slice {
-        double value;
-        Color color;
-        public Slice(double value, Color color) {
-            this.value = value;
-            this.color = color;
+    public void init(){
+
+        shapes = new Shape[this.adapter.getItems().size()];
+        colors = new Color[this.adapter.getItems().size()];
+        Random rand = new Random();
+        for(int i = 0 ; i < this.adapter.getItems().size(); i++) {
+            colors[i] = new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat());
         }
-    }
-//public
-    //for(Item item i)
-    
-    Slice[] slices = {
-            new Slice(5, Color.black),
-            new Slice(33, Color.green),
-            new Slice(20, Color.yellow),
-            new Slice(15, Color.red)
     };
 
+
+    public void initVue(){
+
+
+        Arc2D.Float arc = new Arc2D.Float(Arc2D.PIE);
+        arc.setFrame(100, 150, 200, 200);
+        double total = 0;
+        for(Item it : this.adapter.getItems()){
+            total+=it.getValeur();
+        }
+        double currentValue = 0;
+        int angleDepart = 0;
+        int i = 0;
+        for(Item it : this.adapter.getItems()) {
+            angleDepart = (int) (currentValue * 360 / total);
+            int arcAngle = (int) (it.getValeur() * 360 / total);
+            shapes[i] = new Arc2D.Double(100, 150, 200, 200, angleDepart, arcAngle, Arc2D.PIE);
+            currentValue += it.getValeur();
+            i++;
+        }
+    }
+
     public void paint(Graphics g) {
-        drawPie((Graphics2D) g, getBounds(), slices);
-    }
 
-    void drawPie(Graphics2D g, Rectangle area, Slice[] slices) {
-        double total = 0.0D;
-        for (int i = 0; i < slices.length; i++) {
-            total += slices[i].value;
-        }
-        double curValue = 0.0D;
-        int startAngle = 0;
-        for (int i = 0; i < slices.length; i++) {
-            startAngle = (int) (curValue * 360 / total);
-            int arcAngle = (int) (slices[i].value * 360 / total);
-            g.setColor(slices[i].color);
-            g.fillArc(area.x, area.y, area.width, area.height,
-                    startAngle, arcAngle);
-            curValue += slices[i].value;
+
+        int i = 0;
+        for(Shape sh : shapes){
+            g.setColor(colors[i]);
+            ((Graphics2D) g).draw(sh);
+            g.setColor(colors[i]);
+            ((Graphics2D) g).fill(sh);
+
+            i++;
+            drawCenteredCircle((Graphics2D) g,250,50,100);
+            g.setColor(Color.black);
+            g.drawRect(50,50,100,100);
+            g.setColor(Color.white);
+            g.fillRect(50,50,100,100);
         }
     }
 
+
+
+
+    public void drawCenteredCircle(Graphics2D g, int x, int y, int r) {
+        x = x-(r/2);
+        y = y-(r/2);
+        g.fillOval(x,y,r,r);
+        g.setColor(Color.blue);
+        g.drawString("Budget \n 1000",250,50);
+
+    }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -96,12 +122,18 @@ public class Vue extends JComponent implements MouseListener
     }
 
     @Override
-    public void mouseClicked(MouseEvent arg0) {
-        // TODO Auto-generated method stub
-
-        // TODO: vérifier si un quartier de camembert a été selectionné
+    public void mouseClicked(MouseEvent e) {
+        initVue();
+        for (int i = 0; i < shapes.length; i++) {
+            Shape shape = shapes[i];
+            if (shape.contains(e.getPoint())) {
+                System.out.println("x :" + e.getX() + "y: "+ e.getY());
+                Arc2D arc = (Arc2D) shapes[i];
+                shapes[i] = new Arc2D.Double(0, 50, 400, 400, arc.getAngleStart(), arc.getAngleExtent(), Arc2D.PIE);
+            }
+        }
         // et renvoyer vers le controlleur
-        mTexte = "Mouse at "+arg0.getX()+"x"+arg0.getY();
+        mTexte = "Mouse at "+e.getX()+"x"+e.getY();
         repaint();
     }
 
