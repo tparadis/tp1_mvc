@@ -31,12 +31,23 @@ public class tp1 {
         Model model = new Model("Budget",items);
         Controller controller = new Controller();
         Adapter adapter = new Adapter(model);
+        JButton left = new JButton("<") ;
+        JButton right = new JButton(">");
 
-        Vue vue = new Vue(adapter,controller) ;
+        Vue vue = new Vue(adapter,controller,right,left) ;
+
+        controller.setVue(vue);
 
         JFrame frame = new JFrame();
+
+        left.setBounds(150,400,50,40);
+        right.setBounds(200,400,50,40);
+
+
+        frame.add(left);
+        frame.add(right);
         frame.getContentPane().add(vue);
-        frame.setSize(500, 500);
+        frame.setSize(400, 450);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.setVisible(true);
