@@ -5,6 +5,7 @@ import fr.isitic.gli.tp1.controller.IController;
 import fr.isitic.gli.tp1.model.Adapter;
 import fr.isitic.gli.tp1.model.IModel;
 import fr.isitic.gli.tp1.model.Item;
+import fr.isitic.gli.tp1.model.TableModel;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -23,17 +24,19 @@ public class Vue extends JComponent implements MouseListener, ActionListener
     Graphics2D g2d;
     IModel adapter;
     IController controller;
+    TableModel tableModel;
     Shape[] shapes ;
     Color[] colors;
     Shape whiteCircle;
     JButton right;
     JButton left;
 
+
     int memoShape = -1;
 
     Random rand = new Random();
 
-    public Vue(IModel im, IController ic) {
+    public Vue(IModel im, IController ic, JButton add, JButton remove) {
         adapter = im;
         controller = ic;
         addMouseListener(this);
@@ -41,9 +44,10 @@ public class Vue extends JComponent implements MouseListener, ActionListener
         initVue();
     }
 
-    public Vue(IModel im, IController ic, JButton right, JButton left) {
+    public Vue(IModel im, IController ic, TableModel tableModel, JButton add, JButton remove) {
         adapter = im;
         controller = ic;
+        this.tableModel = tableModel;
         addMouseListener(this);
         this.right = right;
         this.left = left;
@@ -222,4 +226,8 @@ public void changeShape(int i){
             }
         }
     }
+
+
+
+
 }
