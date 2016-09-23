@@ -7,7 +7,6 @@ import fr.isitic.gli.tp1.model.*;
 import fr.isitic.gli.tp1.view.Vue;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +17,7 @@ import java.util.List;
 public class tp1 {
 
     public static void main(String args[]){
-        List<Item> items = new ArrayList<Item>();
+        List<Item> items = new ArrayList<>();
         Item item1 = new Item("loyer","un logement c'est pas gratuit", 150);
         Item item2 = new Item("nourriture","il faut manger pour vivre", 170);
         Item item3 = new Item("loisirs","texte bidon", 90);
@@ -66,7 +65,7 @@ public class tp1 {
         frame.setSize(400, 700);
 
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.setVisible(true);
 

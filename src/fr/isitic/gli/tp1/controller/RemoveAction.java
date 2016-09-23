@@ -1,6 +1,5 @@
 package fr.isitic.gli.tp1.controller;
 
-import fr.isitic.gli.tp1.model.Item;
 import fr.isitic.gli.tp1.model.TableModel;
 
 import javax.swing.*;

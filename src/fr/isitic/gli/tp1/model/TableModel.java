@@ -10,8 +10,8 @@ import java.util.List;
 public class TableModel extends AbstractTableModel {
 
     private final String[] entetes = { "Titre", "Description", "Valeur"};
-    IModel adapter;
-    List<Item> items = new ArrayList<Item>();
+    private IModel adapter;
+    private List<Item> items = new ArrayList<>();
     public TableModel(IModel adapter) {
         this.adapter = adapter;
         items.addAll(adapter.getItems());
