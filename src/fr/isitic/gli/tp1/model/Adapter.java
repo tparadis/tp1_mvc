@@ -1,8 +1,6 @@
 package fr.isitic.gli.tp1.model;
 
-import fr.isitic.gli.tp1.controller.Controller;
 import fr.isitic.gli.tp1.view.Observable;
-import fr.isitic.gli.tp1.view.Vue;
 
 import java.util.List;
 
@@ -27,14 +25,13 @@ public class Adapter extends Observable implements IModel {
     @Override
     public void addItem(Item i ) {
         model.getItems().add(i);
-        this.notifierObserver();
+        this.notifierObserver("");
     }
 
     @Override
     public void removeItem(Item i) {
-        model.getItems().add(i);
-        this.notifierObserver();
-
+        model.getItems().remove(i);
+        this.notifierObserver("");
     }
 
     @Override
@@ -52,10 +49,7 @@ public class Adapter extends Observable implements IModel {
         return model.getItems();
     }
 
-    @Override
-    public void setItems(String titre) {
-        model.setTitre(titre);
-        this.notifierObserver();
 
-    }
+
+
 }

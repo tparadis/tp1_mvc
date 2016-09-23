@@ -1,5 +1,7 @@
 package fr.isitic.gli.tp1.model;
 
+import fr.isitic.gli.tp1.view.IObservateur;
+
 import java.util.List;
 
 /**
@@ -16,7 +18,10 @@ public interface IModel {
 
     public List<Item> getItems();
 
-    public void setItems(String titre);
+    public void notifierObserver(String action);
 
 
+    public void addObservateur(IObservateur o);
+
+    public void removeObservateur(IObservateur o);
 }

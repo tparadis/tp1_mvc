@@ -1,6 +1,8 @@
 package fr.isitic.gli.tp1.main;
 
+import fr.isitic.gli.tp1.controller.AddAction;
 import fr.isitic.gli.tp1.controller.Controller;
+import fr.isitic.gli.tp1.controller.RemoveAction;
 import fr.isitic.gli.tp1.model.*;
 import fr.isitic.gli.tp1.view.Vue;
 
@@ -30,14 +32,18 @@ public class tp1 {
         Model model = new Model("Budget",items);
         Controller controller = new Controller();
         Adapter adapter = new Adapter(model);
+        TableModel tableModel = new TableModel(adapter);
         JButton left = new JButton("<") ;
         JButton right = new JButton(">");
+        JButton add = new JButton(new AddAction(tableModel)) ;
 
-        TableModel tableModel = new TableModel(adapter);
         JTable table = new JTable(tableModel);
-        table.setAutoCreateRowSorter(true);
-        Vue vue = new Vue(adapter,controller,tableModel,right,left) ;
+        JButton remove = new JButton(new RemoveAction(tableModel,table));
 
+        table.setAutoCreateRowSorter(true);
+        Vue vue = new Vue(adapter,controller,right,left) ;
+
+        adapter.addObservateur(vue);
         controller.setVue(vue);
 
         JFrame frame = new JFrame();
@@ -46,9 +52,13 @@ public class tp1 {
         tablepane.setBounds(20,500,360,120);
         left.setBounds(150,400,50,40);
         right.setBounds(200,400,50,40);
+
+        add.setBounds(100,650,100,40);
+        remove.setBounds(200,650,100,40);
         frame.add(tablepane);
 
-
+        frame.add(add);
+        frame.add(remove);
         frame.add(left);
         frame.add(right);
 

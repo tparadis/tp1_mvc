@@ -14,29 +14,19 @@ public class Observable   {
         this.observateurs = new ArrayList<IObservateur>();
     }
 
-    public void notifierObserver (){
+    public void notifierObserver (String action){
         for (IObservateur o : observateurs){
-            o.notifier();
+            o.notifier(action);
         }
     }
 
-    public Observable(List<IObservateur> observateurs) {
-        this.observateurs = observateurs;
-    }
-
-    public void AddObservateur(IObservateur o) {
+    public void addObservateur(IObservateur o) {
         observateurs.add(o);
     }
 
-    public void RemoveObservateur(IObservateur o) {
+    public void removeObservateur(IObservateur o) {
         observateurs.remove(o);
     }
 
-    public List<IObservateur> getObservateurs() {
-        return observateurs;
-    }
 
-    public void setObservateurs(List<IObservateur> observateurs) {
-        this.observateurs = observateurs;
-    }
 }

@@ -1,6 +1,7 @@
 package fr.isitic.gli.tp1.model;
 
 import javax.swing.table.AbstractTableModel;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,10 +11,10 @@ public class TableModel extends AbstractTableModel {
 
     private final String[] entetes = { "Titre", "Description", "Valeur"};
     IModel adapter;
-    List<Item> items;
+    List<Item> items = new ArrayList<Item>();
     public TableModel(IModel adapter) {
         this.adapter = adapter;
-        items = adapter.getItems();
+        items.addAll(adapter.getItems());
     }
 
     @Override
@@ -64,6 +65,22 @@ public class TableModel extends AbstractTableModel {
         }
     }
 
+    public void addItem(Item item) {
+        items.add(item);
+        fireTableRowsInserted(items.size() -1, items.size() -1);
+        adapter.addItem(item);
+        adapter.notifierObserver("");
+    }
+
+    public void removeItem(int rowIndex) {
+
+        adapter.removeItem(items.get(rowIndex));
+        items.remove(rowIndex);
+        fireTableRowsDeleted(rowIndex, rowIndex);
+        adapter.notifierObserver("");
+
+    }
+
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return true; //Toutes les cellules éditables
@@ -85,6 +102,7 @@ public class TableModel extends AbstractTableModel {
                     item.setValeur((int)aValue);
                     break;
             }
+            adapter.notifierObserver("update");
         }
     }
 

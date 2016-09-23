@@ -19,7 +19,7 @@ import java.util.Random;
 import javax.swing.*;
 
 
-public class Vue extends JComponent implements MouseListener, ActionListener
+public class Vue extends JComponent implements MouseListener, ActionListener,IObservateur
 {
     Graphics2D g2d;
     IModel adapter;
@@ -36,7 +36,7 @@ public class Vue extends JComponent implements MouseListener, ActionListener
 
     Random rand = new Random();
 
-    public Vue(IModel im, IController ic, JButton add, JButton remove) {
+    public Vue(IModel im, IController ic) {
         adapter = im;
         controller = ic;
         addMouseListener(this);
@@ -44,13 +44,13 @@ public class Vue extends JComponent implements MouseListener, ActionListener
         initVue();
     }
 
-    public Vue(IModel im, IController ic, TableModel tableModel, JButton add, JButton remove) {
+    public Vue(IModel im, IController ic,JButton right,JButton left) {
         adapter = im;
         controller = ic;
-        this.tableModel = tableModel;
         addMouseListener(this);
         this.right = right;
         this.left = left;
+
         this.right.addActionListener(this);
         this.left.addActionListener(this);
         init();
@@ -228,6 +228,12 @@ public void changeShape(int i){
     }
 
 
+    @Override
+    public void notifier(String action) {
+        if (!action.equals("update"))
+            init();
 
-
+        initVue();
+        repaint();
+    }
 }
